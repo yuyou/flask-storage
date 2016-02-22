@@ -35,7 +35,10 @@ class FileSystemStorage(Storage):
             )
         self._folder_name = folder_name
         self._file_view = file_view
-        self._absolute_path = os.path.abspath(folder_name)
+        if current_app.config.get('DEFAULT_FILE_HOME') is not None:
+            self._absolute_path = os.path.abspath(os.path.join(current_app.config.get('DEFAULT_FILE_HOME'), folder_name))
+        else:
+            self._absolute_path = os.path.abspath(folder_name)
 
     @property
     def folder_name(self):
